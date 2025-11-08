@@ -1,174 +1,185 @@
-"use client"
-import { StarField } from "@/components/star-field"
-import { ChevronDown, Linkedin, Users, LineChart, Clock, Lightbulb, BotIcon as Robot } from "lucide-react"
-import { ContactForm } from "@/components/contact-form"
-import { ChatbotModal } from "@/components/chatbot-modal"
-import { useState, useEffect, useRef } from "react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+"use client";
+import { StarField } from "@/components/star-field";
+import {
+  ChevronDown,
+  Linkedin,
+  Users,
+  LineChart,
+  Clock,
+  Lightbulb,
+  BotIcon as Robot,
+} from "lucide-react";
+import { ContactForm } from "@/components/contact-form";
+import { ChatbotModal } from "@/components/chatbot-modal";
+import { useState, useEffect, useRef } from "react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
-  const [isHeadingVisible, setIsHeadingVisible] = useState(false)
-  const [isAboutVisible, setIsAboutVisible] = useState(false)
-  const [isServicesVisible, setIsServicesVisible] = useState(false)
-  const [isServicesTitleVisible, setIsServicesTitleVisible] = useState(false)
-  const [blurAmount, setBlurAmount] = useState(0)
-  const [isChatbotOpen, setIsChatbotOpen] = useState(false)
-  const [initialHeight, setInitialHeight] = useState(0)
-  const headingRef = useRef<HTMLHeadingElement>(null)
-  const aboutSectionRef = useRef<HTMLElement>(null)
-  const aboutContentRef = useRef<HTMLDivElement>(null)
-  const servicesSectionRef = useRef<HTMLElement>(null)
-  const servicesContentRef = useRef<HTMLDivElement>(null)
-  const servicesTitleRef = useRef<HTMLHeadingElement>(null)
-  const contactSectionRef = useRef<HTMLElement>(null)
-  const scrollRef = useRef(0)
-  const lastScrollRef = useRef(0)
-  const ticking = useRef(false)
+  const [isHeadingVisible, setIsHeadingVisible] = useState(false);
+  const [isAboutVisible, setIsAboutVisible] = useState(false);
+  const [isServicesVisible, setIsServicesVisible] = useState(false);
+  const [isServicesTitleVisible, setIsServicesTitleVisible] = useState(false);
+  const [blurAmount, setBlurAmount] = useState(0);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+  const [initialHeight, setInitialHeight] = useState(0);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const aboutSectionRef = useRef<HTMLElement>(null);
+  const aboutContentRef = useRef<HTMLDivElement>(null);
+  const servicesSectionRef = useRef<HTMLElement>(null);
+  const servicesContentRef = useRef<HTMLDivElement>(null);
+  const servicesTitleRef = useRef<HTMLHeadingElement>(null);
+  const contactSectionRef = useRef<HTMLElement>(null);
+  const scrollRef = useRef(0);
+  const lastScrollRef = useRef(0);
+  const ticking = useRef(false);
 
   // Store initial height on first render
   useEffect(() => {
     if (initialHeight === 0) {
-      setInitialHeight(window.innerHeight)
+      setInitialHeight(window.innerHeight);
     }
-  }, [initialHeight])
+  }, [initialHeight]);
 
   // Handle scroll events to calculate blur amount
   useEffect(() => {
     const handleScroll = () => {
       // Store the current scroll position
-      scrollRef.current = window.scrollY
+      scrollRef.current = window.scrollY;
 
       if (!ticking.current) {
         window.requestAnimationFrame(() => {
           // Calculate blur based on scroll position
           // Reduced max blur from 20px to 8px for a more subtle effect
-          const maxBlur = 8
+          const maxBlur = 8;
           // Increased trigger height to make the effect develop more slowly
-          const triggerHeight = initialHeight * 1.2
-          const newBlurAmount = Math.min(maxBlur, (scrollRef.current / triggerHeight) * maxBlur)
+          const triggerHeight = initialHeight * 1.2;
+          const newBlurAmount = Math.min(
+            maxBlur,
+            (scrollRef.current / triggerHeight) * maxBlur
+          );
 
-          setBlurAmount(newBlurAmount)
+          setBlurAmount(newBlurAmount);
 
           // Update last scroll position for next comparison
-          lastScrollRef.current = scrollRef.current
-          ticking.current = false
-        })
+          lastScrollRef.current = scrollRef.current;
+          ticking.current = false;
+        });
 
-        ticking.current = true
+        ticking.current = true;
       }
-    }
+    };
 
-    window.addEventListener("scroll", handleScroll, { passive: true })
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [initialHeight])
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [initialHeight]);
 
   // Intersection observer for visibility
   useEffect(() => {
     const headingObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsHeadingVisible(true)
+          setIsHeadingVisible(true);
           // Once visible, no need to observe anymore
           if (headingRef.current) {
-            headingObserver.unobserve(headingRef.current)
+            headingObserver.unobserve(headingRef.current);
           }
         }
       },
       {
         threshold: 0.1,
-      },
-    )
+      }
+    );
 
     if (headingRef.current) {
-      headingObserver.observe(headingRef.current)
+      headingObserver.observe(headingRef.current);
     }
 
     const aboutObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsAboutVisible(true)
+          setIsAboutVisible(true);
           // Once visible, no need to observe anymore
           if (aboutContentRef.current) {
-            aboutObserver.unobserve(aboutContentRef.current)
+            aboutObserver.unobserve(aboutContentRef.current);
           }
         }
       },
       {
         threshold: 0.1,
-      },
-    )
+      }
+    );
 
     if (aboutContentRef.current) {
-      aboutObserver.observe(aboutContentRef.current)
+      aboutObserver.observe(aboutContentRef.current);
     }
 
     const servicesObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsServicesVisible(true)
+          setIsServicesVisible(true);
           // Once visible, no need to observe anymore
           if (servicesContentRef.current) {
-            servicesObserver.unobserve(servicesContentRef.current)
+            servicesObserver.unobserve(servicesContentRef.current);
           }
         }
       },
       {
         threshold: 0.1,
-      },
-    )
+      }
+    );
 
     if (servicesContentRef.current) {
-      servicesObserver.observe(servicesContentRef.current)
+      servicesObserver.observe(servicesContentRef.current);
     }
 
     const servicesTitleObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsServicesTitleVisible(true)
+          setIsServicesTitleVisible(true);
           // Once visible, no need to observe anymore
           if (servicesTitleRef.current) {
-            servicesTitleObserver.unobserve(servicesTitleRef.current)
+            servicesTitleObserver.unobserve(servicesTitleRef.current);
           }
         }
       },
       {
         threshold: 0.1,
-      },
-    )
+      }
+    );
 
     if (servicesTitleRef.current) {
-      servicesTitleObserver.observe(servicesTitleRef.current)
+      servicesTitleObserver.observe(servicesTitleRef.current);
     }
 
     return () => {
       if (headingRef.current) {
-        headingObserver.unobserve(headingRef.current)
+        headingObserver.unobserve(headingRef.current);
       }
       if (aboutContentRef.current) {
-        aboutObserver.unobserve(aboutContentRef.current)
+        aboutObserver.unobserve(aboutContentRef.current);
       }
       if (servicesContentRef.current) {
-        servicesObserver.unobserve(servicesContentRef.current)
+        servicesObserver.unobserve(servicesContentRef.current);
       }
       if (servicesTitleRef.current) {
-        servicesTitleObserver.unobserve(servicesTitleRef.current)
+        servicesTitleObserver.unobserve(servicesTitleRef.current);
       }
-    }
-  }, [])
+    };
+  }, []);
 
   // Calculate scale factor based on blur amount
   // Maintain the same scaling effect even with reduced blur
-  const scaleFactor = 1 + blurAmount / 16 // Adjusted to maintain similar scaling with reduced blur
+  const scaleFactor = 1 + blurAmount / 16; // Adjusted to maintain similar scaling with reduced blur
 
   // Add a warp speed effect to stars based on blur amount
   const warpSpeedStyle = {
     transform: `scale(${scaleFactor})`,
     transition: "transform 0.2s ease-out", // Slightly longer transition for smoother effect
-  }
+  };
 
   // Scroll to about section
   const scrollToAbout = () => {
@@ -176,9 +187,9 @@ export default function Home() {
       aboutSectionRef.current.scrollIntoView({
         behavior: "smooth",
         block: "start",
-      })
+      });
     }
-  }
+  };
 
   // Scroll to contact section
   const scrollToContact = () => {
@@ -186,31 +197,34 @@ export default function Home() {
       contactSectionRef.current.scrollIntoView({
         behavior: "smooth",
         block: "start",
-      })
+      });
     }
-  }
+  };
 
   // Open chatbot modal
   const openChatbot = () => {
-    setIsChatbotOpen(true)
-  }
+    setIsChatbotOpen(true);
+  };
 
   // Close chatbot modal
   const closeChatbot = () => {
-    setIsChatbotOpen(false)
-  }
+    setIsChatbotOpen(false);
+  };
 
   // Use fixed height for hero section based on initial viewport height
   const heroStyle = {
     height: initialHeight ? `${initialHeight}px` : "100vh",
-  }
+  };
 
   return (
     <div className="min-h-screen">
-      <section className="relative w-full overflow-hidden bg-black" style={heroStyle}>
+      <section
+        className="relative w-full overflow-hidden bg-black"
+        style={heroStyle}
+      >
         {/* Navigation links in top right corner */}
         <div className="absolute top-6 right-6 z-10 flex space-x-3">
-          <a
+          {/* <a
             href="https://www.linkedin.com/in/neilalliston/"
             target="_blank"
             rel="noopener noreferrer"
@@ -218,16 +232,18 @@ export default function Home() {
             className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-white bg-transparent text-white transition-colors hover:bg-white hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
           >
             <Linkedin className="h-5 w-5" />
-          </a>
+          </a> */}
 
-          <Button
+          {/* <Button
             onClick={scrollToContact}
             variant="outline"
             size="sm"
             className="bg-transparent text-white border-white hover:bg-white hover:text-black transition-colors"
           >
             Contact
-          </Button>
+          </Button> */}
+
+          <appkit-button />
         </div>
 
         <div className="absolute inset-0" style={warpSpeedStyle}>
@@ -238,7 +254,8 @@ export default function Home() {
             <div
               className="backdrop-blur-sm px-6 py-4 rounded-lg inline-block relative"
               style={{
-                background: "radial-gradient(circle, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.3) 100%)",
+                background:
+                  "radial-gradient(circle, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.3) 100%)",
               }}
             >
               <h1 className="text-4xl font-bold text-white md:text-6xl font-heading">
@@ -269,7 +286,7 @@ export default function Home() {
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
-                scrollToAbout()
+                scrollToAbout();
               }
             }}
           >
@@ -278,13 +295,19 @@ export default function Home() {
         </div>
       </section>
 
-      <section ref={aboutSectionRef} id="about" className="py-20 bg-gradient-to-b from-black to-gray-900 text-white">
+      <section
+        ref={aboutSectionRef}
+        id="about"
+        className="py-20 bg-gradient-to-b from-black to-gray-900 text-white"
+      >
         <div className="container mx-auto px-4">
           <div
             ref={aboutContentRef}
             className={cn(
               "max-w-4xl mx-auto transition-all duration-1000 ease-out",
-              isAboutVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10",
+              isAboutVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
             )}
           >
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
@@ -299,16 +322,19 @@ export default function Home() {
                 <h2 className="text-3xl font-bold font-heading">About</h2>
                 <div className="space-y-4 max-w-2xl">
                   <p className="text-gray-300">
-                    I help companies use cutting-edge technology to delight their customers and streamline their
-                    operations.
+                    I help companies use cutting-edge technology to delight
+                    their customers and streamline their operations.
                   </p>
                   <p className="text-gray-300">
-                    Whether you need strategic guidance, technical leadership, or hands-on development support, I can
-                    help you build the right solutions for your business.
+                    Whether you need strategic guidance, technical leadership,
+                    or hands-on development support, I can help you build the
+                    right solutions for your business.
                   </p>
                   <p className="text-gray-300">
-                    I have over a decade of experience building complex technical products, across startups and
-                    enterprises. To learn more about me, try the AI-powered chatbot I built below.
+                    I have over a decade of experience building complex
+                    technical products, across startups and enterprises. To
+                    learn more about me, try the AI-powered chatbot I built
+                    below.
                   </p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 pt-4 justify-center md:justify-start">
@@ -338,13 +364,19 @@ export default function Home() {
         </div>
       </section>
 
-      <section ref={servicesSectionRef} id="services" className="py-20 bg-gray-900 text-white">
+      <section
+        ref={servicesSectionRef}
+        id="services"
+        className="py-20 bg-gray-900 text-white"
+      >
         <div className="container mx-auto px-4">
           <h2
             ref={servicesTitleRef}
             className={cn(
               "mb-12 text-center text-3xl font-bold font-heading transition-all duration-1000 ease-out",
-              isServicesTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10",
+              isServicesTitleVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
             )}
           >
             Services
@@ -353,50 +385,77 @@ export default function Home() {
             ref={servicesContentRef}
             className={cn(
               "max-w-5xl mx-auto transition-all duration-1000 ease-out",
-              isServicesVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10",
+              isServicesVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
             )}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Fractional CPO */}
               <div className="bg-gray-800 rounded-lg p-6 transition-all duration-300 hover:bg-gray-700">
                 <div className="flex items-center mb-4">
-                  <Users className="h-7 w-7 text-white mr-4" aria-hidden="true" />
-                  <h3 className="text-xl font-semibold font-heading">Fractional CPO / CTO</h3>
+                  <Users
+                    className="h-7 w-7 text-white mr-4"
+                    aria-hidden="true"
+                  />
+                  <h3 className="text-xl font-semibold font-heading">
+                    Fractional CPO / CTO
+                  </h3>
                 </div>
                 <p className="text-gray-300">
-                  High-level product leadership, process excellence, team development and coaching, technology strategy.
+                  High-level product leadership, process excellence, team
+                  development and coaching, technology strategy.
                 </p>
               </div>
 
               {/* Product Consulting */}
               <div className="bg-gray-800 rounded-lg p-6 transition-all duration-300 hover:bg-gray-700">
                 <div className="flex items-center mb-4">
-                  <LineChart className="h-7 w-7 text-white mr-4" aria-hidden="true" />
-                  <h3 className="text-xl font-semibold font-heading">Product Consulting</h3>
+                  <LineChart
+                    className="h-7 w-7 text-white mr-4"
+                    aria-hidden="true"
+                  />
+                  <h3 className="text-xl font-semibold font-heading">
+                    Product Consulting
+                  </h3>
                 </div>
                 <p className="text-gray-300">
-                  Roadmap development, product-market fit exploration and validation, candidate assessment.
+                  Roadmap development, product-market fit exploration and
+                  validation, candidate assessment.
                 </p>
               </div>
 
               {/* Interim Leadership */}
               <div className="bg-gray-800 rounded-lg p-6 transition-all duration-300 hover:bg-gray-700">
                 <div className="flex items-center mb-4">
-                  <Clock className="h-7 w-7 text-white mr-4" aria-hidden="true" />
-                  <h3 className="text-xl font-semibold font-heading">Interim Leadership</h3>
+                  <Clock
+                    className="h-7 w-7 text-white mr-4"
+                    aria-hidden="true"
+                  />
+                  <h3 className="text-xl font-semibold font-heading">
+                    Interim Leadership
+                  </h3>
                 </div>
-                <p className="text-gray-300">Temporary CPO or VP of Product for companies in transition.</p>
+                <p className="text-gray-300">
+                  Temporary CPO or VP of Product for companies in transition.
+                </p>
               </div>
 
               {/* Workshops & Advisory */}
               <div className="bg-gray-800 rounded-lg p-6 transition-all duration-300 hover:bg-gray-700">
                 <div className="flex items-center mb-4">
-                  <Lightbulb className="h-7 w-7 text-white mr-4" aria-hidden="true" />
-                  <h3 className="text-xl font-semibold font-heading">Product Development</h3>
+                  <Lightbulb
+                    className="h-7 w-7 text-white mr-4"
+                    aria-hidden="true"
+                  />
+                  <h3 className="text-xl font-semibold font-heading">
+                    Product Development
+                  </h3>
                 </div>
                 <p className="text-gray-300">
-                  Rapid prototyping and deployment of internal and external software applications and websites using
-                  modern tools and frameworks.
+                  Rapid prototyping and deployment of internal and external
+                  software applications and websites using modern tools and
+                  frameworks.
                 </p>
               </div>
             </div>
@@ -404,13 +463,19 @@ export default function Home() {
         </div>
       </section>
 
-      <section ref={contactSectionRef} id="contact" className="bg-gray-100 py-16">
+      <section
+        ref={contactSectionRef}
+        id="contact"
+        className="bg-gray-100 py-16"
+      >
         <div className="container mx-auto px-4">
           <h2
             ref={headingRef}
             className={cn(
               "mb-12 text-center text-3xl font-bold font-heading transition-all duration-1000 ease-out",
-              isHeadingVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10",
+              isHeadingVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
             )}
           >
             Let's Build
@@ -422,5 +487,5 @@ export default function Home() {
       {/* Chatbot Modal */}
       <ChatbotModal isOpen={isChatbotOpen} onClose={closeChatbot} />
     </div>
-  )
+  );
 }
