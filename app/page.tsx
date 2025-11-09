@@ -278,7 +278,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div
+          {/* <div
             className="absolute bottom-20 animate-bounce cursor-pointer"
             onClick={scrollToAbout}
             role="button"
@@ -291,11 +291,11 @@ export default function Home() {
             }}
           >
             <ChevronDown className="h-8 w-8 text-white" />
-          </div>
+          </div> */}
         </div>
       </section>
 
-      <section
+      {/* <section
         ref={aboutSectionRef}
         id="about"
         className="py-20 bg-gradient-to-b from-black to-gray-900 text-white"
@@ -362,9 +362,9 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
-      <section
+      {/* <section
         ref={servicesSectionRef}
         id="services"
         className="py-20 bg-gray-900 text-white"
@@ -391,7 +391,8 @@ export default function Home() {
             )}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Fractional CPO */}
+            
+              {/* Fractional CPO ----------------------
               <div className="bg-gray-800 rounded-lg p-6 transition-all duration-300 hover:bg-gray-700">
                 <div className="flex items-center mb-4">
                   <Users
@@ -407,8 +408,9 @@ export default function Home() {
                   development and coaching, technology strategy.
                 </p>
               </div>
+              
 
-              {/* Product Consulting */}
+              {/* Product Consulting -----------------
               <div className="bg-gray-800 rounded-lg p-6 transition-all duration-300 hover:bg-gray-700">
                 <div className="flex items-center mb-4">
                   <LineChart
@@ -425,7 +427,7 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* Interim Leadership */}
+              {/* Interim Leadership -------------------
               <div className="bg-gray-800 rounded-lg p-6 transition-all duration-300 hover:bg-gray-700">
                 <div className="flex items-center mb-4">
                   <Clock
@@ -441,7 +443,7 @@ export default function Home() {
                 </p>
               </div>
 
-              {/* Workshops & Advisory */}
+              {/* Workshops & Advisory ----------------
               <div className="bg-gray-800 rounded-lg p-6 transition-all duration-300 hover:bg-gray-700">
                 <div className="flex items-center mb-4">
                   <Lightbulb
@@ -461,9 +463,9 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> 
 
-      <section
+      {/* <section
         ref={contactSectionRef}
         id="contact"
         className="bg-gray-100 py-16"
@@ -482,7 +484,7 @@ export default function Home() {
           </h2>
           <ContactForm />
         </div>
-      </section>
+      </section> */}
 
       {/* Chatbot Modal */}
       <ChatbotModal isOpen={isChatbotOpen} onClose={closeChatbot} />
