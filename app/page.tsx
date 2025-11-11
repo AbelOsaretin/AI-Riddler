@@ -211,9 +211,7 @@ export default function Home() {
       return;
     }
     try {
-      const res = await fetch(
-        "https://abelosaretin.name.ng/webhook-test/getRiddle"
-      );
+      const res = await fetch("https://abelosaretin.name.ng/webhook/getRiddle");
 
       if (!res.ok) {
         throw new Error(`Request failed (${res.status})`);
@@ -290,7 +288,7 @@ export default function Home() {
       };
 
       const res = await fetch(
-        "https://abelosaretin.name.ng/webhook-test/submitRiddle",
+        "https://abelosaretin.name.ng/webhook/submitRiddle",
         {
           method: "POST",
           headers: {
