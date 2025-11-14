@@ -1,30 +1,59 @@
-# Space Theme Landing Pag
+# AI Riddler
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+Small Next.js app that delivers short riddles and lets connected wallet users submit answers.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/abel-osaretins-projects/v0-space-theme-landing-pag)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/YEfgvsf8MT7)
+Key features
 
-## Overview
+- Wallet-connect gated "Get Riddle" button (uses AppKit integrations).
+- Fetches riddles from a webhook and displays the riddle text.
+- Users submit answers; app POSTs the answer along with Riddle_ID and wallet address to a webhook and shows the result (status + correct answer).
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+Deploy / Demo
 
-## Deployment
+- This project uses Next.js and can be deployed to Vercel or any Node host that supports Next 14.
 
-Your project is live at:
+Local development
 
-**[https://vercel.com/abel-osaretins-projects/v0-space-theme-landing-pag](https://vercel.com/abel-osaretins-projects/v0-space-theme-landing-pag)**
+1. Install dependencies (pnpm is recommended — this repo includes a pnpm lockfile):
 
-## Build your app
+```bash
+pnpm install
+```
 
-Continue building your app on:
+2. Run the dev server:
 
-**[https://v0.app/chat/YEfgvsf8MT7](https://v0.app/chat/YEfgvsf8MT7)**
+```bash
+pnpm dev
+```
 
-## How It Works
+3. Open http://localhost:3000
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+Important files and behavior
+
+- `app/page.tsx` — main UI. The "Get Riddle" button calls the webhook at `/webhook-test/getRiddle` and requires a connected wallet (the hook `useAppKitAccount` is used to check `isConnected` and read `address`).
+- On successful fetch the app extracts `data[0].Riddle_Text` and `Riddle_ID` from the webhook response and displays the riddle text.
+- The answer textbox + Submit button POSTs JSON to `/webhook-test/submitRiddle` with the shape:
+
+```json
+{
+  "Riddle_ID": "RID-...",
+  "Riddle_Text": "...",
+  "userAnswer": "...",
+  "userWallet": "0x..."
+}
+```
+
+- The app expects responses that include `Pass` / `Status` and `Correct_Answer` inside `data[0]` (see `submitAnswer` in `app/page.tsx`); it then displays the returned status and correct answer.
+
+Notes
+
+- If you see TypeScript errors about `useAppKitAccount` imports, try switching the import path between `@reown/appkit/react` and `@reown/appkit/controllers/react` depending on your installed package version — one of them exports the hook in the bundled build.
+- The webhook endpoints in the code point to `https://abelosaretin.name.ng/webhook-test/*`. Change these URLs in `app/page.tsx` if you want to target a different server.
+
+Contributing
+
+- Open a branch, make changes, and open a PR against `main`.
+
+License
+
+- MIT
